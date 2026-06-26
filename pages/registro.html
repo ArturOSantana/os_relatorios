@@ -1,0 +1,73 @@
+<div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start">
+  <div>
+    <div class="card section-gap">
+      <div class="card-header"><h3>Informações do Registro</h3></div>
+      <div class="card-body">
+        <div class="form-row col3">
+          <div class="form-group">
+            <label class="form-label">Data</label>
+            <input type="date" class="form-input" id="f-data">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Período</label>
+            <select class="form-select" id="f-periodo">
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noturno">Noturno</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo O.S</label>
+            <select class="form-select" id="f-tipo">
+              <option value="Corretiva">Corretiva</option>
+              <option value="Preventiva">Preventiva</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Origens (selecione todas que se aplicam)</label>
+          <div class="toggle-group" id="f-origens-group"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Observação</label>
+          <textarea class="form-textarea" id="f-obs" placeholder="Informação adicional..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Líderes e Pendências</h3>
+        <button class="btn btn-ghost btn-sm" onclick="addLiderRow()">+ Líder</button>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 80px 28px;gap:6px;margin-bottom:8px;">
+          <span class="form-label" style="margin:0">Líder</span>
+          <span class="form-label" style="margin:0;text-align:center">O.S</span>
+          <span></span>
+        </div>
+        <div id="f-lideres-container"></div>
+        <div id="f-total-wrap" style="display:none;margin-top:12px;padding:10px 14px;background:var(--red-dim);border:1px solid var(--red-border);border-radius:2px;display:flex;align-items:center;gap:10px">
+          <span style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--red)" id="f-total-num">0</span>
+          <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text2)">Total não entregues</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:70px">
+    <div class="card">
+      <div class="card-header">
+        <h3>Preview</h3>
+        <button class="btn btn-ghost btn-sm" onclick="copiarTextoEl('preview-text')">Copiar</button>
+      </div>
+      <div class="card-body" style="padding:14px">
+        <div class="relatorio-text" id="preview-text" style="font-size:11px;min-height:200px"></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-primary btn-block btn-lg" onclick="salvarRegistro()">Salvar Registro</button>
+      <button class="btn btn-secondary btn-block" onclick="limparForm()">Limpar</button>
+    </div>
+  </div>
+</div>

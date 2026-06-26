@@ -1,0 +1,47 @@
+<div class="search-bar">
+  <input type="text" id="hist-busca" placeholder="Buscar por líder, observação..." oninput="renderHistorico()">
+  <div class="sep"></div>
+  <select id="hist-periodo" onchange="renderHistorico()">
+    <option value="">Todos os períodos</option>
+    <option value="Manhã">Manhã</option>
+    <option value="Tarde">Tarde</option>
+    <option value="Noturno">Noturno</option>
+  </select>
+  <div class="sep"></div>
+  <select id="hist-mes" onchange="renderHistorico()"><option value="">Todos os meses</option></select>
+  <div class="sep"></div>
+  <select id="hist-lider" onchange="renderHistorico()"><option value="">Todos os líderes</option></select>
+  <div class="sep"></div>
+  <button class="btn btn-ghost btn-sm" onclick="limparFiltrosHist()">Limpar filtros</button>
+</div>
+<div id="hist-lista"></div>
+
+<div id="hist-relatorio" style="display:none;margin-top:20px">
+  <div class="card">
+    <div class="card-header">
+      <h3>Relatório Formal</h3>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="copiarTextoEl('hist-rel-formal')">Copiar</button>
+        <button class="btn btn-ghost btn-sm" onclick="imprimirRelatorio()">Imprimir</button>
+      </div>
+    </div>
+    <div class="card-body"><div class="relatorio-text" id="hist-rel-formal"></div></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="card-header">
+      <h3>WhatsApp</h3>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="copiarTextoEl('hist-rel-wapp')">Copiar</button>
+        <button class="btn btn-success btn-sm" onclick="abrirWapp('hist-rel-wapp')">Abrir WhatsApp</button>
+      </div>
+    </div>
+    <div class="card-body"><div class="wapp-text" id="hist-rel-wapp"></div></div>
+    <div class="card-body" style="padding-top:0">
+      <div class="form-group">
+        <label class="form-label">Selecionar líderes para WhatsApp</label>
+        <div id="hist-wapp-lideres" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <div class="form-hint">Marque apenas os líderes que devem receber a mensagem</div>
+      </div>
+    </div>
+  </div>
+</div>

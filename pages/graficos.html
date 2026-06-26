@@ -1,0 +1,24 @@
+<div class="form-group" style="max-width:200px;margin-bottom:20px">
+  <label class="form-label">Mês de referência</label>
+  <select class="form-select" id="graf-mes" onchange="renderGraficos()"></select>
+</div>
+<div class="grid-2 section-gap">
+  <div class="card">
+    <div class="card-header"><h3>Pendências por Dia</h3></div>
+    <div class="card-body"><div class="chart-box" style="height:240px"><canvas id="chart-dias"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h3>Por Líder — Mês Atual</h3></div>
+    <div class="card-body"><div class="chart-box" style="height:240px"><canvas id="chart-lider-mes"></canvas></div></div>
+  </div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header"><h3>Comparativo Mensal</h3></div>
+    <div class="card-body"><div class="chart-box" style="height:240px"><canvas id="chart-mensal"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h3>Por Período</h3></div>
+    <div class="card-body"><div class="chart-box" style="height:240px"><canvas id="chart-periodo2"></canvas></div></div>
+  </div>
+</div>

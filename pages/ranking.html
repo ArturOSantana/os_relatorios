@@ -1,0 +1,42 @@
+<div class="form-row col2" style="max-width:400px;margin-bottom:20px">
+  <div class="form-group">
+    <label class="form-label">Período</label>
+    <select class="form-select" id="rank-mes" onchange="renderRanking()">
+      <option value="">Histórico completo</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Turno</label>
+    <select class="form-select" id="rank-turno" onchange="renderRanking()">
+      <option value="">Todos</option>
+      <option value="Manhã">Manhã</option>
+      <option value="Tarde">Tarde</option>
+      <option value="Noturno">Noturno</option>
+    </select>
+  </div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header"><h3>Ranking de Pendências</h3></div>
+    <div class="card-body" id="rank-lista"></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h3>Estatísticas por Líder</h3></div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table id="rank-table">
+          <thead>
+            <tr>
+              <th>Líder</th>
+              <th>Total O.S</th>
+              <th>Registros</th>
+              <th>Média/dia</th>
+              <th>Pior dia</th>
+            </tr>
+          </thead>
+          <tbody id="rank-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
