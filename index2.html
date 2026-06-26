@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendencias O.S Corretivas</title>
+<style>
+  :root {
+    --preto: #0f0f0f;
+    --cinza-escuro: #1a1a1a;
+    --cinza-medio: #2a2a2a;
+    --cinza-borda: #333;
+    --cinza-texto: #999;
+    --branco: #f0f0f0;
+    --branco-puro: #ffffff;
+    --vermelho: #c0392b;
+    --vermelho-claro: #e74c3c;
+    --amarelo: #d4a017;
+    --verde: #27ae60;
+    --azul: #2980b9;
+    --fonte-mono: 'Courier New', Courier, monospace;
+    --fonte-sans: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--preto);
+    color: var(--branco);
+    font-family: var(--fonte-sans);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--cinza-escuro);
+    border-bottom: 2px solid var(--vermelho);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header h1 {
+    font-family: var(--fonte-mono);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--branco-puro);
+    font-weight: 400;
+  }
+
+  header h1 span {
+    color: var(--vermelho-claro);
+    font-weight: 700;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* LAYOUT */
+  .app {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: calc(100vh - 57px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--cinza-escuro);
+    border-right: 1px solid var(--cinza-borda);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-section {
+    border-bottom: 1px solid var(--cinza-borda);
+    padding: 20px;
+  }
+
+  .sidebar-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  /* FORM ELEMENTS */
+  label {
+    display: block;
+    font-size: 11px;
+    color: var(--cinza-texto);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    margin-top: 12px;
+  }
+
+  label:first-of-type { margin-top: 0; }
+
+  input[type="date"], input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    background: var(--cinza-medio);
+    border: 1px solid var(--cinza-borda);
+    color: var(--branco-puro);
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: var(--fonte-sans);
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="date"]:focus,
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--vermelho);
+  }
+
+  select option { background: var(--cinza-medio); }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* PERIODO CHECKBOXES */
+  .periodo-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .periodo-btn {
+    flex: 1;
+    padding: 7px;
+    background: var(--cinza-medio);
+    border: 1px solid var(--cinza-borda);
+    color: var(--cinza-texto);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    text-align: center;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .periodo-btn.active {
+    background: var(--vermelho);
+    border-color: var(--vermelho);
+    color: var(--branco-puro);
+  }
+
+  /* ORIGEM TAGS */
+  .origem-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .origem-tag {
+    padding: 5px 10px;
+    border: 1px solid var(--cinza-borda);
+    color: var(--cinza-texto);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    user-select: none;
+    background: var(--cinza-medio);
+  }
+
+  .origem-tag.active {
+    border-color: var(--amarelo);
+    color: var(--amarelo);
+    background: rgba(212, 160, 23, 0.08);
+  }
+
+  /* LIDERES SECTION */
+  .lider-row {
+    display: grid;
+    grid-template-columns: 1fr 64px 28px;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .lider-row input[type="text"] { font-size: 12px; }
+  .lider-row input[type="number"] { text-align: center; }
+
+  .btn-remove {
+    background: none;
+    border: 1px solid var(--cinza-borda);
+    color: var(--cinza-texto);
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 4px 0;
+    font-size: 14px;
+    line-height: 1;
+    transition: all 0.15s;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-remove:hover { border-color: var(--vermelho); color: var(--vermelho); }
+
+  /* BUTTONS */
+  .btn {
+    padding: 9px 16px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: var(--fonte-sans);
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--vermelho);
+    color: var(--branco-puro);
+  }
+
+  .btn-primary:hover { background: var(--vermelho-claro); }
+
+  .btn-secondary {
+    background: var(--cinza-medio);
+    color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+  }
+
+  .btn-secondary:hover { border-color: var(--branco); color: var(--branco-puro); }
+
+  .btn-small {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
+  .btn-full { width: 100%; }
+
+  .btn-group {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    overflow-y: auto;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* HISTORICO */
+  .historico-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .historico-header h2 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+    font-weight: 600;
+  }
+
+  .historico-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* CARDS DE REGISTRO */
+  .registros-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .registro-card {
+    background: var(--cinza-escuro);
+    border: 1px solid var(--cinza-borda);
+    border-radius: 2px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+
+  .registro-card:hover { border-color: #555; }
+
+  .registro-card.selected {
+    border-color: var(--vermelho);
+    border-left-width: 3px;
+  }
+
+  .registro-card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .registro-data {
+    font-family: var(--fonte-mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--branco-puro);
+    letter-spacing: 1px;
+  }
+
+  .registro-total {
+    font-family: var(--fonte-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--vermelho-claro);
+    line-height: 1;
+  }
+
+  .registro-total-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+    text-align: right;
+    line-height: 1;
+  }
+
+  .registro-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .tag-periodo {
+    background: rgba(41, 128, 185, 0.2);
+    color: #74b9e8;
+    border: 1px solid rgba(41, 128, 185, 0.3);
+  }
+
+  .tag-origem {
+    background: rgba(212, 160, 23, 0.15);
+    color: var(--amarelo);
+    border: 1px solid rgba(212, 160, 23, 0.25);
+  }
+
+  .registro-lideres-preview {
+    font-size: 11px;
+    color: var(--cinza-texto);
+    margin-top: 6px;
+  }
+
+  .registro-card-actions {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    display: none;
+    gap: 4px;
+  }
+
+  .registro-card:hover .registro-card-actions { display: flex; }
+
+  /* PREVIEW / RELATORIO */
+  .relatorio-box {
+    background: var(--cinza-escuro);
+    border: 1px solid var(--cinza-borda);
+    border-radius: 2px;
+  }
+
+  .relatorio-box-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--cinza-borda);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cinza-medio);
+  }
+
+  .relatorio-box-header h3 {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+    font-weight: 600;
+  }
+
+  .relatorio-box-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .relatorio-content {
+    padding: 24px;
+    font-family: var(--fonte-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: var(--branco);
+    min-height: 200px;
+  }
+
+  /* WAPP PREVIEW */
+  .wapp-content {
+    padding: 20px 24px;
+    font-family: var(--fonte-mono);
+    font-size: 12px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    background: #1a1f1a;
+    color: #e0e0e0;
+    min-height: 120px;
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--cinza-texto);
+  }
+
+  .empty-state .line1 {
+    font-family: var(--fonte-mono);
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 12px;
+  }
+
+  .empty-state p {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--cinza-escuro);
+    border: 1px solid var(--verde);
+    color: var(--branco-puro);
+    padding: 12px 20px;
+    font-size: 12px;
+    border-radius: 2px;
+    z-index: 999;
+    transform: translateY(80px);
+    transition: transform 0.25s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .toast.show { transform: translateY(0); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--cinza-escuro);
+    border: 1px solid var(--cinza-borda);
+    border-radius: 2px;
+    width: 540px;
+    max-width: 95vw;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--cinza-borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: var(--cinza-escuro);
+  }
+
+  .modal-header h3 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .modal-body {
+    padding: 20px;
+    font-family: var(--fonte-mono);
+    font-size: 12px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    color: var(--branco);
+  }
+
+  .modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--cinza-borda);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--cinza-borda);
+    margin: 4px 0;
+  }
+
+  /* TOTAL BADGE */
+  .total-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(192, 57, 43, 0.15);
+    border: 1px solid rgba(192, 57, 43, 0.4);
+    border-radius: 2px;
+    padding: 6px 12px;
+    margin-top: 8px;
+  }
+
+  .total-badge .num {
+    font-family: var(--fonte-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--vermelho-claro);
+  }
+
+  .total-badge .label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+  }
+
+  /* OBSERVACAO HINT */
+  .obs-hint {
+    font-size: 10px;
+    color: var(--cinza-texto);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cinza-escuro); }
+  ::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .app { grid-template-columns: 1fr; height: auto; }
+    .sidebar { border-right: none; border-bottom: 1px solid var(--cinza-borda); }
+    .main { padding: 16px; }
+    header { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>O.S. CORRETIVAS / <span>PENDENCIAS</span></h1>
+  <div class="header-actions">
+    <button class="btn btn-secondary btn-small" onclick="exportarJSON()">Exportar JSON</button>
+    <label class="btn btn-secondary btn-small" style="margin:0; cursor:pointer;">
+      Importar JSON
+      <input type="file" accept=".json" onchange="importarJSON(event)" style="display:none">
+    </label>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR: FORMULARIO -->
+  <aside class="sidebar">
+
+    <div class="sidebar-section">
+      <div class="section-label">Novo Registro</div>
+
+      <label>Data</label>
+      <input type="date" id="campo-data">
+
+      <label>Periodo</label>
+      <div class="periodo-group" id="periodo-group">
+        <div class="periodo-btn active" data-val="Manha" onclick="togglePeriodo(this)">Manha</div>
+        <div class="periodo-btn" data-val="Tarde" onclick="togglePeriodo(this)">Tarde</div>
+        <div class="periodo-btn" data-val="Noturno" onclick="togglePeriodo(this)">Noturno</div>
+      </div>
+
+      <label>Origem</label>
+      <div class="origem-tags" id="origem-tags">
+        <div class="origem-tag active" data-val="Recolhida Normal" onclick="toggleOrigem(this)">Recolhida Normal</div>
+        <div class="origem-tag active" data-val="Avaria" onclick="toggleOrigem(this)">Avaria</div>
+        <div class="origem-tag active" data-val="Telemetria" onclick="toggleOrigem(this)">Telemetria</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-label">Lideres e Pendencias</div>
+
+      <div style="display:grid; grid-template-columns:1fr 64px 28px; gap:6px; margin-bottom:6px;">
+        <span style="font-size:10px;color:var(--cinza-texto);letter-spacing:1px;text-transform:uppercase">Lider</span>
+        <span style="font-size:10px;color:var(--cinza-texto);letter-spacing:1px;text-transform:uppercase;text-align:center">O.S</span>
+        <span></span>
+      </div>
+
+      <div id="lideres-container"></div>
+
+      <button class="btn btn-secondary btn-small" onclick="addLider()" style="margin-top:8px; width:100%">+ Adicionar Lider</button>
+
+      <div id="total-preview" style="display:none" class="total-badge">
+        <span class="num" id="total-num">0</span>
+        <span class="label">Total Nao Entregues</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-label">Observacao</div>
+      <textarea id="campo-obs" placeholder="Ex: fichas reimpressas, entregues ao lider X..."></textarea>
+      <div class="obs-hint">Informacao adicional que aparece no relatorio</div>
+    </div>
+
+    <div class="sidebar-section">
+      <button class="btn btn-primary btn-full" onclick="salvarRegistro()">Salvar Registro</button>
+      <button class="btn btn-secondary btn-full" onclick="limparFormulario()" style="margin-top:8px">Limpar</button>
+    </div>
+
+  </aside>
+
+  <!-- MAIN: HISTORICO + RELATORIO -->
+  <main class="main">
+
+    <div>
+      <div class="historico-header">
+        <h2>Historico de Registros</h2>
+        <div class="historico-actions">
+          <button class="btn btn-secondary btn-small" onclick="gerarRelatorioCompleto()">Relatorio Completo</button>
+        </div>
+      </div>
+
+      <div id="registros-lista" class="registros-lista">
+        <div class="empty-state">
+          <div class="line1">[ ]</div>
+          <p>Nenhum registro ainda. Preencha o formulario e salve.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="relatorio-area" style="display:none">
+      <div class="relatorio-box">
+        <div class="relatorio-box-header">
+          <h3>Relatorio Formal</h3>
+          <div class="relatorio-box-actions">
+            <button class="btn btn-secondary btn-small" onclick="copiarTexto('relatorio-content')">Copiar</button>
+          </div>
+        </div>
+        <div class="relatorio-content" id="relatorio-content"></div>
+      </div>
+
+      <div class="relatorio-box" style="margin-top:16px">
+        <div class="relatorio-box-header">
+          <h3>Mensagem WhatsApp</h3>
+          <div class="relatorio-box-actions">
+            <button class="btn btn-secondary btn-small" onclick="copiarTexto('wapp-content')">Copiar</button>
+            <button class="btn btn-primary btn-small" onclick="abrirWhatsApp()">Abrir WhatsApp</button>
+          </div>
+        </div>
+        <div class="wapp-content" id="wapp-content"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL RELATORIO COMPLETO -->
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Relatorio Completo</h3>
+      <button class="btn btn-secondary btn-small" onclick="fecharModal()">Fechar</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="copiarTexto('modal-body')">Copiar Tudo</button>
+      <button class="btn btn-primary" onclick="abrirWhatsAppCompleto()">Enviar WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =====================
+// ESTADO
+// =====================
+let registros = JSON.parse(localStorage.getItem('os_registros') || '[]');
+let periodoAtual = 'Manha';
+let origensAtivas = ['Recolhida Normal', 'Avaria', 'Telemetria'];
+let registroSelecionado = null;
+
+// =====================
+// INIT
+// =====================
+document.addEventListener('DOMContentLoaded', () => {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('campo-data').value = hoje;
+  addLider();
+  renderRegistros();
+});
+
+// =====================
+// PERIODO
+// =====================
+function togglePeriodo(el) {
+  document.querySelectorAll('.periodo-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  periodoAtual = el.dataset.val;
+}
+
+// =====================
+// ORIGEM
+// =====================
+function toggleOrigem(el) {
+  el.classList.toggle('active');
+  const val = el.dataset.val;
+  if (el.classList.contains('active')) {
+    if (!origensAtivas.includes(val)) origensAtivas.push(val);
+  } else {
+    origensAtivas = origensAtivas.filter(o => o !== val);
+  }
+}
+
+// =====================
+// LIDERES
+// =====================
+function addLider(nome = '', qtd = '') {
+  const container = document.getElementById('lideres-container');
+  const row = document.createElement('div');
+  row.className = 'lider-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Nome do lider" value="${nome}" oninput="atualizarTotal()">
+    <input type="number" placeholder="0" min="0" value="${qtd}" oninput="atualizarTotal()">
+    <button class="btn-remove" onclick="this.parentElement.remove(); atualizarTotal()">x</button>
+  `;
+  container.appendChild(row);
+  atualizarTotal();
+}
+
+function atualizarTotal() {
+  const rows = document.querySelectorAll('#lideres-container .lider-row');
+  let total = 0;
+  rows.forEach(row => {
+    const qtd = parseInt(row.querySelector('input[type=number]').value) || 0;
+    total += qtd;
+  });
+  const badge = document.getElementById('total-preview');
+  if (total > 0) {
+    badge.style.display = 'inline-flex';
+    document.getElementById('total-num').textContent = total;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function getLideres() {
+  const rows = document.querySelectorAll('#lideres-container .lider-row');
+  const lista = [];
+  rows.forEach(row => {
+    const nome = row.querySelector('input[type=text]').value.trim();
+    const qtd = parseInt(row.querySelector('input[type=number]').value) || 0;
+    if (nome || qtd) lista.push({ nome, qtd });
+  });
+  return lista;
+}
+
+// =====================
+// SALVAR REGISTRO
+// =====================
+function salvarRegistro() {
+  const data = document.getElementById('campo-data').value;
+  if (!data) { mostrarToast('Informe a data do registro.'); return; }
+
+  const lideres = getLideres();
+  if (lideres.length === 0 || lideres.every(l => !l.nome)) {
+    mostrarToast('Informe ao menos um lider.');
+    return;
+  }
+
+  const obs = document.getElementById('campo-obs').value.trim();
+  const total = lideres.reduce((s, l) => s + l.qtd, 0);
+
+  const registro = {
+    id: Date.now(),
+    data,
+    periodo: periodoAtual,
+    origens: [...origensAtivas],
+    lideres,
+    total,
+    obs
+  };
+
+  registros.unshift(registro);
+  salvarStorage();
+  renderRegistros();
+  selecionarRegistro(registro.id);
+  limparFormulario();
+  mostrarToast('Registro salvo com sucesso.');
+}
+
+// =====================
+// STORAGE
+// =====================
+function salvarStorage() {
+  localStorage.setItem('os_registros', JSON.stringify(registros));
+}
+
+// =====================
+// RENDER LISTA
+// =====================
+function renderRegistros() {
+  const lista = document.getElementById('registros-lista');
+
+  if (registros.length === 0) {
+    lista.innerHTML = `<div class="empty-state">
+      <div class="line1">[ ]</div>
+      <p>Nenhum registro ainda. Preencha o formulario e salve.</p>
+    </div>`;
+    return;
+  }
+
+  // Agrupar por mes
+  const grupos = {};
+  registros.forEach(r => {
+    const [ano, mes] = r.data.split('-');
+    const chave = `${ano}-${mes}`;
+    if (!grupos[chave]) grupos[chave] = [];
+    grupos[chave].push(r);
+  });
+
+  let html = '';
+  Object.keys(grupos).sort().reverse().forEach(chave => {
+    const [ano, mes] = chave.split('-');
+    const nomeMes = new Date(ano, mes - 1).toLocaleString('pt-BR', { month: 'long', year: 'numeric' }).toUpperCase();
+    html += `<div style="font-size:10px;letter-spacing:2px;color:var(--cinza-texto);margin:12px 0 8px;text-transform:uppercase">${nomeMes}</div>`;
+    grupos[chave].forEach(r => {
+      const [,, dia] = r.data.split('-');
+      const dataFmt = `${dia}/${mes}`;
+      const selecionado = registroSelecionado === r.id ? 'selected' : '';
+      const lideresPreview = r.lideres.map(l => `${l.nome} (${l.qtd})`).join(' / ');
+      html += `
+      <div class="registro-card ${selecionado}" onclick="selecionarRegistro(${r.id})" data-id="${r.id}">
+        <div class="registro-card-actions">
+          <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); editarRegistro(${r.id})">Editar</button>
+          <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); excluirRegistro(${r.id})" style="color:var(--vermelho)">x</button>
+        </div>
+        <div class="registro-card-header">
+          <span class="registro-data">${dataFmt}</span>
+          <div style="text-align:right">
+            <div class="registro-total">${r.total}</div>
+            <div class="registro-total-label">nao entregues</div>
+          </div>
+        </div>
+        <div class="registro-meta">
+          <span class="tag tag-periodo">${r.periodo}</span>
+          ${r.origens.map(o => `<span class="tag tag-origem">${o}</span>`).join('')}
+        </div>
+        <div class="registro-lideres-preview" style="margin-top:6px">${lideresPreview}</div>
+      </div>`;
+    });
+  });
+
+  lista.innerHTML = html;
+}
+
+// =====================
+// SELECIONAR REGISTRO -> GERAR RELATORIO
+// =====================
+function selecionarRegistro(id) {
+  registroSelecionado = id;
+  renderRegistros();
+
+  const r = registros.find(x => x.id === id);
+  if (!r) return;
+
+  document.getElementById('relatorio-area').style.display = 'block';
+  document.getElementById('relatorio-content').textContent = gerarTextoFormal(r);
+  document.getElementById('wapp-content').textContent = gerarTextoWhatsApp(r);
+}
+
+// =====================
+// TEXTO RELATORIO FORMAL
+// =====================
+function gerarTextoFormal(r) {
+  const [ano, mes, dia] = r.data.split('-');
+  const dataFmt = `${dia}/${mes}/${ano}`;
+  const origensStr = r.origens.join(' / ');
+
+  let txt = '';
+  txt += `PENDENCIAS DE O.S CORRETIVAS\n`;
+  txt += `Origem: ${origensStr}\n`;
+  txt += `${'─'.repeat(40)}\n`;
+  txt += `Data   : ${dataFmt}\n`;
+  txt += `Periodo: ${r.periodo}\n`;
+  txt += `${'─'.repeat(40)}\n\n`;
+  txt += `LIDERES RESPONSAVEIS\n\n`;
+
+  r.lideres.forEach(l => {
+    const nome = l.nome || '(sem nome)';
+    const qtd = String(l.qtd).padStart(2, '0');
+    txt += `  ${nome.padEnd(28)} ${qtd} O.S pendente(s)\n`;
+  });
+
+  txt += `\n${'─'.repeat(40)}\n`;
+  txt += `TOTAL NAO ENTREGUE: ${r.total} O.S\n`;
+
+  if (r.obs) {
+    txt += `\nObs: ${r.obs}\n`;
+  }
+
+  return txt;
+}
+
+// =====================
+// TEXTO WHATSAPP
+// =====================
+function gerarTextoWhatsApp(r) {
+  const [ano, mes, dia] = r.data.split('-');
+  const dataFmt = `${dia}/${mes}`;
+  const origensStr = r.origens.join(' / ');
+
+  let txt = '';
+  txt += `*PENDENCIAS O.S CORRETIVAS*\n`;
+  txt += `_Origem: ${origensStr}_\n\n`;
+  txt += `*Data: ${dataFmt}*\n`;
+  txt += `*Periodo: ${r.periodo}*\n\n`;
+  txt += `*Nao entregue: ${r.total}*\n\n`;
+
+  r.lideres.forEach(l => {
+    const nome = l.nome || '(sem nome)';
+    txt += `${l.qtd} O.S - ${nome}\n`;
+  });
+
+  if (r.obs) {
+    txt += `\n_Obs: ${r.obs}_\n`;
+  }
+
+  return txt;
+}
+
+// =====================
+// RELATORIO COMPLETO (todos os registros)
+// =====================
+function gerarRelatorioCompleto() {
+  if (registros.length === 0) { mostrarToast('Nenhum registro para gerar relatorio.'); return; }
+
+  // Agrupar por mes
+  const grupos = {};
+  [...registros].sort((a,b) => a.data.localeCompare(b.data)).forEach(r => {
+    const [ano, mes] = r.data.split('-');
+    const nomeMes = new Date(ano, mes - 1).toLocaleString('pt-BR', { month: 'long' }).toUpperCase();
+    const chave = `${ano}-${mes}`;
+    if (!grupos[chave]) grupos[chave] = { nome: nomeMes, itens: [] };
+    grupos[chave].itens.push(r);
+  });
+
+  let txt = 'PENDENCIAS DE O.S CORRETIVAS\n';
+  txt += '================================\n\n';
+
+  Object.keys(grupos).sort().forEach(chave => {
+    const g = grupos[chave];
+    txt += `[ ${g.nome} ]\n\n`;
+    g.itens.forEach(r => {
+      const [ano, mes, dia] = r.data.split('-');
+      const dataFmt = `${dia}/${mes}`;
+      const origensStr = r.origens.join(' / ');
+      txt += `Data: ${dataFmt} | Periodo: ${r.periodo}\n`;
+      txt += `Origem: ${origensStr}\n`;
+      txt += `Nao entregue: ${r.total}\n`;
+      r.lideres.forEach(l => {
+        txt += `  - ${l.nome}: ${l.qtd} O.S\n`;
+      });
+      if (r.obs) txt += `  Obs: ${r.obs}\n`;
+      txt += '\n';
+    });
+    txt += '─'.repeat(40) + '\n\n';
+  });
+
+  const totalGeral = registros.reduce((s, r) => s + r.total, 0);
+  txt += `TOTAL GERAL DE PENDENCIAS: ${totalGeral} O.S`;
+
+  document.getElementById('modal-body').textContent = txt;
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function fecharModal(event) {
+  if (!event || event.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('show');
+  }
+}
+
+// =====================
+// EDITAR REGISTRO
+// =====================
+function editarRegistro(id) {
+  const r = registros.find(x => x.id === id);
+  if (!r) return;
+
+  document.getElementById('campo-data').value = r.data;
+
+  // Periodo
+  document.querySelectorAll('.periodo-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === r.periodo);
+  });
+  periodoAtual = r.periodo;
+
+  // Origens
+  origensAtivas = [...r.origens];
+  document.querySelectorAll('.origem-tag').forEach(t => {
+    t.classList.toggle('active', r.origens.includes(t.dataset.val));
+  });
+
+  // Lideres
+  document.getElementById('lideres-container').innerHTML = '';
+  r.lideres.forEach(l => addLider(l.nome, l.qtd));
+
+  // Obs
+  document.getElementById('campo-obs').value = r.obs || '';
+
+  // Remove o original
+  registros = registros.filter(x => x.id !== id);
+  salvarStorage();
+  renderRegistros();
+  document.getElementById('relatorio-area').style.display = 'none';
+  atualizarTotal();
+}
+
+// =====================
+// EXCLUIR REGISTRO
+// =====================
+function excluirRegistro(id) {
+  if (!confirm('Excluir este registro?')) return;
+  registros = registros.filter(x => x.id !== id);
+  if (registroSelecionado === id) {
+    registroSelecionado = null;
+    document.getElementById('relatorio-area').style.display = 'none';
+  }
+  salvarStorage();
+  renderRegistros();
+  mostrarToast('Registro excluido.');
+}
+
+// =====================
+// LIMPAR FORMULARIO
+// =====================
+function limparFormulario() {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('campo-data').value = hoje;
+  document.getElementById('campo-obs').value = '';
+  document.getElementById('lideres-container').innerHTML = '';
+  addLider();
+  document.getElementById('total-preview').style.display = 'none';
+}
+
+// =====================
+// COPIAR TEXTO
+// =====================
+function copiarTexto(elementId) {
+  const el = document.getElementById(elementId);
+  const texto = el.textContent || el.innerText;
+  navigator.clipboard.writeText(texto).then(() => mostrarToast('Copiado para a area de transferencia.'));
+}
+
+// =====================
+// WHATSAPP
+// =====================
+function abrirWhatsApp() {
+  const texto = document.getElementById('wapp-content').textContent;
+  window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+function abrirWhatsAppCompleto() {
+  const texto = document.getElementById('modal-body').textContent;
+  window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+// =====================
+// EXPORT / IMPORT JSON
+// =====================
+function exportarJSON() {
+  if (registros.length === 0) { mostrarToast('Nenhum dado para exportar.'); return; }
+  const blob = new Blob([JSON.stringify(registros, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `os_pendencias_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  mostrarToast('JSON exportado.');
+}
+
+function importarJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const dados = JSON.parse(e.target.result);
+      if (!Array.isArray(dados)) throw new Error('Formato invalido');
+      registros = dados;
+      salvarStorage();
+      renderRegistros();
+      mostrarToast(`${dados.length} registros importados.`);
+    } catch {
+      mostrarToast('Erro ao importar: arquivo invalido.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// =====================
+// TOAST
+// =====================
+function mostrarToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2800);
+}
+</script>
+
+
+
+</body>
+
+<footer style="text-align: center; padding: 20px; color: var(--text3); font-size: 12px; border-top: 1px solid var(--border);">
+  &copy; 2026 Artur O. de Santana . Todos os direitos reservados.
+  Versão 1.0.0
+</footer>
+</html>
